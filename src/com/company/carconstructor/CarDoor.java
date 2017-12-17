@@ -1,6 +1,6 @@
 package com.company.carconstructor;
 
-class CarDoor {
+public class CarDoor {
     private boolean doorsClose;
     private boolean windowsClose;
     CarDoor(){
@@ -11,28 +11,33 @@ class CarDoor {
         this.doorsClose = doorsClose;
         this.windowsClose = windowsClose;
     }
-    void openDoor(){
+
+    public boolean getStatementDoor(){ return doorsClose; }
+    public boolean getStatementWindow(){ return windowsClose; }
+
+    public void openDoor(){
         this.doorsClose = false;
     }
-    void openWindow(){
+    public void openWindow(){
         this.windowsClose = false;
     }
-    void closeDoor(){
+    public void closeDoor(){
         this.doorsClose = true;
     }
-    void closeWindow(){
+    public void closeWindow(){
         this.windowsClose = true;
     }
 
-    void reverseDoor(){
+    public void reverseDoor(){
         doorsClose = !doorsClose;
     }
-    void reverseWindow(){
+    public void reverseWindow(){
         windowsClose = !windowsClose;
     }
 
-    void sysoutState(){
+    public void sysoutState(){
         System.out.println("Door " + (doorsClose ? "close" : "open" +
                         " , window " + (windowsClose ? "close" : "open")));
     }
+
 }

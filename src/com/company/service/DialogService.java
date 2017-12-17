@@ -1,53 +1,13 @@
-package com.company.carconstructor;
+package com.company.service;
+
+import com.company.carconstructor.Car;
+import com.company.carconstructor.TypeEnjine;
 
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
-
-    public static void main(String[] args) {
-	// write your code here
-
-        Car car = createCarDialog();
-        car.sysoutCarStatement();
-
-        do {
-            System.out.println("Choise action\n" +
-                    "1. Change speed\n" +
-                    "2. Put 1 passenger\n" +
-                    "3. Get out 1 passenger\n" +
-                    "4. Get out  all passengers\n" +
-                    "5. Open/close the door\n" +
-                    "6. Erase wheel\n" +
-                    "7. Get out all wheel\n" +
-                    "8. Sett wheel`s\n" +
-                    "9. Get impossible maximum speed\n" +
-                    "10. Exit");
-            break;
-
-        } while (true);
-
-    }
-    private static char getActualAnswer(String s){
-        char[] chars = s.toCharArray();
-        char c;
-        boolean b = true;
-        Scanner scanner = new Scanner(System.in);
-        do {
-            System.out.println(":>");
-            c = scanner.nextLine().toLowerCase().charAt(0);
-            for (char c1:
-                 chars) {
-                if (c == c1) {
-                    b = false;
-                    break;
-                }
-            }
-        } while (b);
-        return c;
-    }
-    static Car createCarDialog(){
-
+class DialogService {
+    Car createCarDialog(){
         int maximumSpeed;
         double acceleration;
         int roominess;
@@ -55,18 +15,17 @@ public class Main {
         int currentSpeed;
         TypeEnjine typeEnjine;
 
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Hello!\n" +
                 "Create a car [Y]es / [N]o?\n" +
                 ":>\n");
-        if (getActualAnswer("yn") == 'n'){
+        if (scanActualAnswer("yn") == 'n'){
             System.out.println("Bye!");
             System.exit(0);
         }
 //ENGINE
         System.out.println("Enter engine type: \n" +
                 "[G]as, [D]iesel");
-        if (getActualAnswer("gd") == 'g')
+        if (scanActualAnswer("gd") == 'g')
             typeEnjine = TypeEnjine.GAS;
         else
             typeEnjine = TypeEnjine.DIESEL;
@@ -118,7 +77,45 @@ public class Main {
         car.setCountCarDoors(countOfDoor);
         return car;
     }
-    private static int scannerCorrectInt(){
+    void printAsTable(String[] namesCol, String[] datas){
+//sets lohg of table
+        final int COUNT_COL = namesCol.length;
+        int lengthTable;
+        int lengthColum = 0;
+        int lengthDatas = 0;
+        for (int i = 0; i < COUNT_COL; i++) {
+            if (namesCol[i].length() > lengthColum) lengthColum = namesCol[i].length();
+            if (datas[i].length() > lengthDatas) lengthDatas = datas[i].length();
+        }
+        lengthTable = lengthColum + 2 + lengthDatas + 2;
+
+        for (int i = 0; i < COUNT_COL; i++) {
+            for (int j = 0; j < lengthTable+2; j++) {
+                System.out.print('-');
+            }
+            System.out.println();
+            System.out.print("| " + namesCol[i]);
+            for (int j = namesCol[i].length(); j < lengthColum; j++) {
+                System.out.print(' ');
+            }
+            System.out.print(" | " + datas[i]);
+            for (int j = datas[i].length(); j < lengthDatas+1; j++) {
+                System.out.print(' ');
+            }
+            System.out.println('|');
+        }
+        for (int j = 0; j < lengthTable+2; j++) {
+            System.out.print('-');
+        }
+        System.out.println();
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    int scannerCorrectInt(){
+        System.out.println(":>");
         Scanner scanner = new Scanner(System.in);
         try {
             return scanner.nextInt();
@@ -126,12 +123,30 @@ public class Main {
             return scannerCorrectInt();
         }
     }
-    private static double scannerCorrectDouble(){
+    double scannerCorrectDouble(){
         Scanner scanner = new Scanner(System.in);
         try {
             return scanner.nextDouble();
         }catch (Exception e){
             return scannerCorrectDouble();
         }
+    }
+    char scanActualAnswer(String s){
+        char[] chars = s.toCharArray();
+        char c;
+        boolean b = true;
+        Scanner scanner = new Scanner(System.in);
+        do {
+            System.out.println(":>");
+            c = scanner.nextLine().toLowerCase().charAt(0);
+            for (char c1:
+                    chars) {
+                if (c == c1) {
+                    b = false;
+                    break;
+                }
+            }
+        } while (b);
+        return c;
     }
 }
